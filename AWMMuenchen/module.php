@@ -22,6 +22,7 @@ class AWMMuenchen extends IPSModule
 
         // Heute: Einzelne String-Variable als Zusammenfassung
         $this->RegisterVariableString('Heute', 'Heute', '', 4);
+        $this->RegisterVariableString('HeuteVestaboard', 'Heute (Vestaboard)', '', 5);
 
         // Variablen für Wochentage (Wochenübersicht)
         $this->RegisterVariableString('Montag', 'Montag', '', 11);
@@ -129,6 +130,9 @@ class AWMMuenchen extends IPSModule
 
         $heuteStr = empty($heuteListe) ? "Keine Leerung" : implode(", ", $heuteListe);
         $this->SetValue('Heute', $heuteStr);
+        
+        $heuteVesta = empty($heuteListe) ? "" : implode(", ", $heuteListe);
+        $this->SetValue('HeuteVestaboard', $heuteVesta);
 
         // Wochen-Variablen setzen
         foreach ($weekdays as $dayName => $ts) {
