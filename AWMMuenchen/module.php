@@ -127,13 +127,13 @@ class AWMMuenchen extends IPSModule
         $this->SetValue('PapierHeute', $todaySummary['PapierHeute']);
         $this->SetValue('BioHeute', $todaySummary['BioHeute']);
 
-        $heuteStr = empty($heuteListe) ? "-" : implode(", ", $heuteListe);
+        $heuteStr = empty($heuteListe) ? "Keine Leerung" : implode(", ", $heuteListe);
         $this->SetValue('Heute', $heuteStr);
 
         // Wochen-Variablen setzen
         foreach ($weekdays as $dayName => $ts) {
-            $str = empty($weekSummary[$dayName]) ? '-' : implode(', ', $weekSummary[$dayName]);
-            $this->SetValue($dayName, $str);
+            $val = empty($weekSummary[$dayName]) ? "Keine Leerung" : implode(", ", $weekSummary[$dayName]);
+            $this->SetValue($dayName, $val);
         }
         
         $this->SendDebug("AWM", "Kalender erfolgreich aktualisiert.", 0);
