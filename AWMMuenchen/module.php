@@ -50,13 +50,19 @@ class AWMMuenchen extends IPSModule
     {
         $url = $this->ReadPropertyString('CalendarUrl');
         if (empty($url)) {
-            $this->SendDebug("AWM", "Keine ICS URL konfiguriert.", 0);
+            echo "Keine ICS URL konfiguriert.";
             return;
         }
 
+        // Ersetze hardcodiertes Jahr durch aktuelles Jahr
+        $currentYear = date('Y');
+        $url = preg_replace('/tx_awmabfuhrkalender_abfuhrkalender(%5B|\[)year(%5D|\])=\d{4}/', 'tx_awmabfuhrkalender_abfuhrkalender$1year$2=' . $currentYear, $url);
+
         $events = $this->parseICS($url);
         if (empty($events)) {
-            $this->SendDebug("AWM", "Fehler beim Herunterladen oder Parsen der ICS-Datei.", 0);
+            $msg = "Fehler beim Abrufen des Abfuhrkalenders für das Jahr $currentYear. Möglicherweise ist der generierte Link (cHash) abgelaufen. Bitte generiere auf der AWM Webseite einen neuen Link für das aktuelle Jahr und trage ihn in die Instanz ein.";
+            $this->LogMessage($msg, KL_ERROR);
+            echo $msg;
             return;
         }
 
