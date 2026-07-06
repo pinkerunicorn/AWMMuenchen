@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 class AWMMuenchen extends IPSModule
 {
-    public function Create()
+    public function Create(): void
     {
         parent::Create();
 
@@ -33,7 +33,7 @@ class AWMMuenchen extends IPSModule
         $this->RegisterVariableString('Samstag', 'Samstag', '', 16);
     }
 
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         parent::ApplyChanges();
 
@@ -50,7 +50,7 @@ class AWMMuenchen extends IPSModule
         }
     }
 
-    public function UpdateCalendar()
+    public function UpdateCalendar(): void
     {
         $url = $this->ReadPropertyString('CalendarUrl');
         if (empty($url)) {
@@ -156,7 +156,7 @@ class AWMMuenchen extends IPSModule
         $this->SendDebug("AWM", "Kalender erfolgreich aktualisiert.", 0);
     }
 
-    protected function parseICS($url)
+    protected function parseICS(string $url): array
     {
         // Sys_GetURLContent is IP-Symcon's robust internal method.
         if (function_exists('Sys_GetURLContent')) {
@@ -223,7 +223,7 @@ class AWMMuenchen extends IPSModule
         return $events;
     }
 
-    private function isEventActiveOnDay($event, $targetTs)
+    private function isEventActiveOnDay(array $event, int $targetTs): bool
     {
         // 1. Ist das Datum eine bekannte Ausnahme (Urlaub, Feiertagsverschiebung)?
         if (isset($event['exdates']) && is_array($event['exdates'])) {
