@@ -136,7 +136,7 @@ class AWMMuenchen extends IPSModule
 
         // Formatiere Heute-Liste
         $heuteListeFormatted = array_map(function($t) use ($emojiMap) { return isset($emojiMap[$t]) ? $emojiMap[$t] : $t; }, $heuteListe);
-        $heuteStr = empty($heuteListeFormatted) ? "Keine Leerung" : implode(", ", $heuteListeFormatted);
+        $heuteStr = empty($heuteListeFormatted) ? "✅ Keine Leerung" : implode(", ", $heuteListeFormatted);
         $this->SetValue('Heute', $heuteStr);
         
         $heuteVesta = empty($heuteListeFormatted) ? "" : implode(", ", $heuteListeFormatted);
@@ -149,7 +149,7 @@ class AWMMuenchen extends IPSModule
             if (!empty($weekSummary[$dayName])) {
                 $weekSummaryFormatted = array_map(function($t) use ($emojiMap) { return isset($emojiMap[$t]) ? $emojiMap[$t] : $t; }, $weekSummary[$dayName]);
             }
-            $val = empty($weekSummaryFormatted) ? "Keine Leerung" : implode(", ", $weekSummaryFormatted);
+            $val = empty($weekSummaryFormatted) ? "✅ Keine Leerung" : implode(", ", $weekSummaryFormatted);
             $this->SetValue($varName, $val);
         }
         
