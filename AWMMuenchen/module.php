@@ -139,7 +139,7 @@ class AWMMuenchen extends IPSModule
         $heuteStr = empty($heuteListeFormatted) ? "✅ Keine Leerung" : implode(", ", $heuteListeFormatted);
         $this->SetValue('Heute', $heuteStr);
         
-        $heuteVesta = empty($heuteListeFormatted) ? "" : implode(", ", $heuteListeFormatted);
+        $heuteVesta = empty($heuteListe) ? "" : implode(", ", $heuteListe);
         $this->SetValue('HeuteVestaboard', $heuteVesta);
 
         // Wochen-Variablen setzen
