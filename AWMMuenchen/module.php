@@ -129,18 +129,25 @@ class AWMMuenchen extends IPSModule
         $this->SendDebug("AWM", "Kalender erfolgreich aktualisiert.", 0);
     }
 
-    private function parseICS($url)
+    protected function parseICS($url)
     {
-        // Ein kleiner Trick, um fehlerhafte Zertifikate o.ä. zu umgehen, falls AWM was umstellt
-        $context = stream_context_create([
-            'http' => ['timeout' => 15],
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false
-            ]
-        ]);
-        
-        $data = @file_get_contents($url, false, $context);
+        // Sys_GetURLContent is IP-Symcon's robust internal method.
+        if (function_exists('Sys_GetURLContent')) {
+            $data = @Sys_GetURLContent($url);
+        } else {
+            // Fallback for tests
+            $context = stream_context_create([
+                'http' => [
+                    'timeout' => 15,
+                    'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\r\n"
+                ],
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false
+                ]
+            ]);
+            $data = @file_get_contents($url, false, $context);
+        }
         if (!$data) return [];
 
         $lines = explode("\n", str_replace("\r", "", $data));
@@ -192,9 +199,11 @@ class AWMMuenchen extends IPSModule
     private function isEventActiveOnDay($event, $targetTs)
     {
         // 1. Ist das Datum eine bekannte Ausnahme (Urlaub, Feiertagsverschiebung)?
-        foreach ($event['exdates'] as $exTs) {
-            if ($exTs == $targetTs) {
-                return false;
+        if (isset($event['exdates']) && is_array($event['exdates'])) {
+            foreach ($event['exdates'] as $exTs) {
+                if ($exTs == $targetTs) {
+                    return false;
+                }
             }
         }
 
