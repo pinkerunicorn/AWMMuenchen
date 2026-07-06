@@ -20,13 +20,16 @@ class AWMMuenchen extends IPSModule
         $this->RegisterVariableBoolean('PapierHeute', 'Papiertonne (Heute)', '~Switch', 20);
         $this->RegisterVariableBoolean('BioHeute', 'Biotonne (Heute)', '~Switch', 30);
 
-        // Wochenübersicht
-        $this->RegisterVariableString('Montag', 'Montag', '', 100);
-        $this->RegisterVariableString('Dienstag', 'Dienstag', '', 110);
-        $this->RegisterVariableString('Mittwoch', 'Mittwoch', '', 120);
-        $this->RegisterVariableString('Donnerstag', 'Donnerstag', '', 130);
-        $this->RegisterVariableString('Freitag', 'Freitag', '', 140);
-        $this->RegisterVariableString('Samstag', 'Samstag', '', 150);
+        // Heute: Einzelne String-Variable als Zusammenfassung
+        $this->RegisterVariableString('Heute', 'Heute', '', 4);
+
+        // Variablen für Wochentage (Wochenübersicht)
+        $this->RegisterVariableString('Montag', 'Montag', '', 11);
+        $this->RegisterVariableString('Dienstag', 'Dienstag', '', 12);
+        $this->RegisterVariableString('Mittwoch', 'Mittwoch', '', 13);
+        $this->RegisterVariableString('Donnerstag', 'Donnerstag', '', 14);
+        $this->RegisterVariableString('Freitag', 'Freitag', '', 15);
+        $this->RegisterVariableString('Samstag', 'Samstag', '', 16);
     }
 
     public function ApplyChanges()
@@ -83,10 +86,13 @@ class AWMMuenchen extends IPSModule
             'Samstag' => strtotime('+5 days', $mondayTs)
         ];
 
+        $todaySummary = [
+            'RestmuellHeute' => false,
+            'PapierHeute' => false,
+            'BioHeute' => false
+        ];
+        $heuteListe = [];
         $weekSummary = [];
-        foreach ($weekdays as $dayName => $ts) {
-            $weekSummary[$dayName] = [];
-        }
 
         foreach ($events as $e) {
             $summary = strtolower($e['summary']);
@@ -97,17 +103,19 @@ class AWMMuenchen extends IPSModule
             if (strpos($summary, 'bio') !== false) $type = 'Bio';
             
             if (!$type) continue;
-
-            // Prüfe für Heute
+            
+            // Check Today
             if ($this->isEventActiveOnDay($e, $todayTs)) {
-                if ($type == 'Restmüll') $restToday = true;
-                if ($type == 'Papier') $papierToday = true;
-                if ($type == 'Bio') $bioToday = true;
+                if ($type == 'Restmüll') $todaySummary['RestmuellHeute'] = true;
+                if ($type == 'Papier') $todaySummary['PapierHeute'] = true;
+                if ($type == 'Bio') $todaySummary['BioHeute'] = true;
+                $heuteListe[] = $type;
             }
-
-            // Prüfe für die ganze Woche
+            
+            // Check Weekdays
             foreach ($weekdays as $dayName => $ts) {
                 if ($this->isEventActiveOnDay($e, $ts)) {
+                    if (!isset($weekSummary[$dayName])) $weekSummary[$dayName] = [];
                     if (!in_array($type, $weekSummary[$dayName])) {
                         $weekSummary[$dayName][] = $type;
                     }
@@ -115,10 +123,12 @@ class AWMMuenchen extends IPSModule
             }
         }
 
-        // Heutige Variablen setzen
-        $this->SetValue('RestmuellHeute', $restToday);
-        $this->SetValue('PapierHeute', $papierToday);
-        $this->SetValue('BioHeute', $bioToday);
+        $this->SetValue('RestmuellHeute', $todaySummary['RestmuellHeute']);
+        $this->SetValue('PapierHeute', $todaySummary['PapierHeute']);
+        $this->SetValue('BioHeute', $todaySummary['BioHeute']);
+
+        $heuteStr = empty($heuteListe) ? "-" : implode(", ", $heuteListe);
+        $this->SetValue('Heute', $heuteStr);
 
         // Wochen-Variablen setzen
         foreach ($weekdays as $dayName => $ts) {
