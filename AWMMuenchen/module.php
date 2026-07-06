@@ -128,16 +128,29 @@ class AWMMuenchen extends IPSModule
         $this->SetValue('PapierHeute', $todaySummary['PapierHeute']);
         $this->SetValue('BioHeute', $todaySummary['BioHeute']);
 
-        $heuteStr = empty($heuteListe) ? "Keine Leerung" : implode(", ", $heuteListe);
+        $emojiMap = [
+            'Restmüll' => '🗑️ Restmüll',
+            'Papier'   => '📦 Papier',
+            'Bio'      => '🍂 Bio'
+        ];
+
+        // Formatiere Heute-Liste
+        $heuteListeFormatted = array_map(function($t) use ($emojiMap) { return isset($emojiMap[$t]) ? $emojiMap[$t] : $t; }, $heuteListe);
+        $heuteStr = empty($heuteListeFormatted) ? "Keine Leerung" : implode(", ", $heuteListeFormatted);
         $this->SetValue('Heute', $heuteStr);
         
-        $heuteVesta = empty($heuteListe) ? "" : implode(", ", $heuteListe);
+        $heuteVesta = empty($heuteListeFormatted) ? "" : implode(", ", $heuteListeFormatted);
         $this->SetValue('HeuteVestaboard', $heuteVesta);
 
         // Wochen-Variablen setzen
         foreach ($weekdays as $dayName => $ts) {
-            $val = empty($weekSummary[$dayName]) ? "Keine Leerung" : implode(", ", $weekSummary[$dayName]);
-            $this->SetValue($dayName, $val);
+            $varName = str_replace('ü', 'ue', $dayName); // Nur zur Sicherheit
+            $weekSummaryFormatted = [];
+            if (!empty($weekSummary[$dayName])) {
+                $weekSummaryFormatted = array_map(function($t) use ($emojiMap) { return isset($emojiMap[$t]) ? $emojiMap[$t] : $t; }, $weekSummary[$dayName]);
+            }
+            $val = empty($weekSummaryFormatted) ? "Keine Leerung" : implode(", ", $weekSummaryFormatted);
+            $this->SetValue($varName, $val);
         }
         
         $this->SendDebug("AWM", "Kalender erfolgreich aktualisiert.", 0);
