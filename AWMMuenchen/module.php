@@ -16,9 +16,9 @@ class AWMMuenchen extends IPSModule
         $this->RegisterTimer('UpdateTimer', 0, 'AWM_UpdateCalendar($_IPS[\'TARGET\']);');
 
         // Heutige Abholungen
-        $this->RegisterVariableBoolean('RestmuellHeute', 'Restmülltonne (Heute)', '~Switch', 10);
-        $this->RegisterVariableBoolean('PapierHeute', 'Papiertonne (Heute)', '~Switch', 20);
-        $this->RegisterVariableBoolean('BioHeute', 'Biotonne (Heute)', '~Switch', 30);
+        $this->RegisterVariableBoolean('RestmuellHeute', 'Restmülltonne (Heute)', '', 10);
+        $this->RegisterVariableBoolean('PapierHeute', 'Papiertonne (Heute)', '', 20);
+        $this->RegisterVariableBoolean('BioHeute', 'Biotonne (Heute)', '', 30);
 
         // Heute: Einzelne String-Variable als Zusammenfassung
         $this->RegisterVariableString('Heute', 'Heute', '', 4);
@@ -36,6 +36,18 @@ class AWMMuenchen extends IPSModule
     public function ApplyChanges(): void
     {
         parent::ApplyChanges();
+
+        if (function_exists('IPS_SetVariableCustomPresentation')) {
+            IPS_SetVariableCustomPresentation($this->GetIDForIdent('RestmuellHeute'), [
+                'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+            ]);
+            IPS_SetVariableCustomPresentation($this->GetIDForIdent('PapierHeute'), [
+                'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+            ]);
+            IPS_SetVariableCustomPresentation($this->GetIDForIdent('BioHeute'), [
+                'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+            ]);
+        }
 
         $interval = $this->ReadPropertyInteger('UpdateInterval');
         if ($interval > 0) {
