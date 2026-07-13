@@ -280,5 +280,35 @@ class AWMMuenchen extends IPSModuleStrict
         IPS_LogMessage('SmartVillaKunterbunt', 'AWMMuenchen: ' . $Message);
         return true;
     }
+
+    public function GetConfigurationForm(): string
+    {
+        return <<<'EOT'
+{
+    "elements": [
+        {
+            "type": "ValidationTextBox",
+            "name": "CalendarUrl",
+            "caption": "AWM ICS Download URL"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "UpdateInterval",
+            "caption": "Update-Intervall (Stunden)",
+            "minimum": 1,
+            "maximum": 24
+        }
+    ],
+    "actions": [
+        {
+            "type": "Button",
+            "label": "Kalender jetzt abrufen",
+            "onClick": "AWM_UpdateCalendar($id);"
+        }
+    ]
 }
+EOT;
+    }
+}
+
 
