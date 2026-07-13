@@ -287,16 +287,21 @@ class AWMMuenchen extends IPSModuleStrict
 {
     "elements": [
         {
-            "type": "ValidationTextBox",
-            "name": "CalendarUrl",
-            "caption": "AWM ICS Download URL"
-        },
-        {
-            "type": "NumberSpinner",
-            "name": "UpdateInterval",
-            "caption": "Update-Intervall (Stunden)",
-            "minimum": 1,
-            "maximum": 24
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "ValidationTextBox",
+                    "name": "CalendarUrl",
+                    "caption": "AWM ICS Download URL"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "UpdateInterval",
+                    "caption": "Update-Intervall (Stunden)",
+                    "minimum": 1,
+                    "maximum": 24
+                }
+            ]
         }
     ],
     "actions": [
