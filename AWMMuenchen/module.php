@@ -37,17 +37,16 @@ class AWMMuenchen extends IPSModule
     {
         parent::ApplyChanges();
 
-        if (function_exists('IPS_SetVariableCustomPresentation')) {
-            IPS_SetVariableCustomPresentation($this->GetIDForIdent('RestmuellHeute'), [
-                'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
-            ]);
-            IPS_SetVariableCustomPresentation($this->GetIDForIdent('PapierHeute'), [
-                'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
-            ]);
-            IPS_SetVariableCustomPresentation($this->GetIDForIdent('BioHeute'), [
-                'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
-            ]);
-        }
+        
+        IPS_SetVariableCustomPresentation($this->GetIDForIdent('RestmuellHeute'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+        ]);
+        IPS_SetVariableCustomPresentation($this->GetIDForIdent('PapierHeute'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+        ]);
+        IPS_SetVariableCustomPresentation($this->GetIDForIdent('BioHeute'), [
+            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+        ]);
 
         $interval = $this->ReadPropertyInteger('UpdateInterval');
         if ($interval > 0) {
