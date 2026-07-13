@@ -277,10 +277,9 @@ class AWMMuenchen extends IPSModule
         return false;
     }
 
-    protected function LogMessage(string $Message, int $Type): bool
+    protected function LogMessage($Message, $Type)
     {
         IPS_LogMessage('SmartVillaKunterbunt', 'AWMMuenchen: ' . $Message);
-        return true;
     }
 }
 
