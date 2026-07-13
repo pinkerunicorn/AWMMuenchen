@@ -3,9 +3,13 @@
     "name": "AWMMuenchen",
     "type": 3,
     "vendor": "PinkerUnicorn",
-    "aliases": ["AWM München Abfallkalender"],
+    "aliases": [
+        "AWM München Abfallkalender"
+    ],
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
-    "prefix": "AWM"
+    "prefix": "AWM",
+    "author": "Florian Graßinger",
+    "url": "https://github.com/pinkerunicorn/"
 }

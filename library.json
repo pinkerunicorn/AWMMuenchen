@@ -1,9 +1,9 @@
 ﻿{
     "id":  "{55D285CA-9477-4E26-B83F-31FEA73FE8F6}",
-    "author":  "Florian Graßinger",
     "name":  "AWM Muenchen",
-    "url":  "",
     "version":  "1.0",
     "build":  0,
-    "date":  0
+    "date":  0,
+    "author":  "Florian Graßinger",
+    "url":  "https://github.com/pinkerunicorn/"
 }
