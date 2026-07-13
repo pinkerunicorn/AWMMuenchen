@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-class AWMMuenchen extends IPSModule
+class AWMMuenchen extends IPSModuleStrict
 {
-    public function Create(): void
-    {
+    public function Create(): void{
         parent::Create();
 
         // Properties
@@ -33,8 +32,7 @@ class AWMMuenchen extends IPSModule
         $this->RegisterVariableString('Samstag', 'Samstag', '', 16);
     }
 
-    public function ApplyChanges(): void
-    {
+    public function ApplyChanges(): void{
         parent::ApplyChanges();
 
         
@@ -277,9 +275,10 @@ class AWMMuenchen extends IPSModule
         return false;
     }
 
-    protected function LogMessage($Message, $Type)
+    protected function LogMessage(string $Message, int $Type): bool
     {
         IPS_LogMessage('SmartVillaKunterbunt', 'AWMMuenchen: ' . $Message);
+        return true;
     }
 }
 
