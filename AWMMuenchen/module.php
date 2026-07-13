@@ -37,13 +37,13 @@ class AWMMuenchen extends IPSModuleStrict
 
         
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('RestmuellHeute'), [
-            'Presentation' => VARIABLE_PRESENTATION_SWITCH
+            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
         ]);
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('PapierHeute'), [
-            'Presentation' => VARIABLE_PRESENTATION_SWITCH
+            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
         ]);
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('BioHeute'), [
-            'Presentation' => VARIABLE_PRESENTATION_SWITCH
+            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
         ]);
 
         $interval = $this->ReadPropertyInteger('UpdateInterval');
