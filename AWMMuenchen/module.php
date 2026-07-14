@@ -37,13 +37,13 @@ class AWMMuenchen extends IPSModuleStrict
 
         
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('RestmuellHeute'), [
-            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+            'PRESENTATION'=> VARIABLE_PRESENTATION_SWITCH
         ]);
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('PapierHeute'), [
-            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+            'PRESENTATION'=> VARIABLE_PRESENTATION_SWITCH
         ]);
         IPS_SetVariableCustomPresentation($this->GetIDForIdent('BioHeute'), [
-            'PRESENTATION' => VARIABLE_PRESENTATION_SWITCH
+            'PRESENTATION'=> VARIABLE_PRESENTATION_SWITCH
         ]);
 
         $interval = $this->ReadPropertyInteger('UpdateInterval');
@@ -69,7 +69,7 @@ class AWMMuenchen extends IPSModuleStrict
 
         // Ersetze hardcodiertes Jahr durch aktuelles Jahr
         $currentYear = date('Y');
-        $url = preg_replace('/tx_awmabfuhrkalender_abfuhrkalender(%5B|\[)year(%5D|\])=\d{4}/', 'tx_awmabfuhrkalender_abfuhrkalender$1year$2=' . $currentYear, $url);
+        $url = preg_replace('/tx_awmabfuhrkalender_abfuhrkalender(%5B|\[)year(%5D|\])=\d{4}/', 'tx_awmabfuhrkalender_abfuhrkalender$1year$2='. $currentYear, $url);
 
         $events = $this->parseICS($url);
         if (empty($events)) {
@@ -88,18 +88,18 @@ class AWMMuenchen extends IPSModuleStrict
         // Montag dieser Woche finden
         $mondayTs = strtotime('monday this week', $todayTs);
         $weekdays = [
-            'Montag' => $mondayTs,
-            'Dienstag' => strtotime('+1 day', $mondayTs),
-            'Mittwoch' => strtotime('+2 days', $mondayTs),
-            'Donnerstag' => strtotime('+3 days', $mondayTs),
-            'Freitag' => strtotime('+4 days', $mondayTs),
-            'Samstag' => strtotime('+5 days', $mondayTs)
+            'Montag'=> $mondayTs,
+            'Dienstag'=> strtotime('+1 day', $mondayTs),
+            'Mittwoch'=> strtotime('+2 days', $mondayTs),
+            'Donnerstag'=> strtotime('+3 days', $mondayTs),
+            'Freitag'=> strtotime('+4 days', $mondayTs),
+            'Samstag'=> strtotime('+5 days', $mondayTs)
         ];
 
         $todaySummary = [
-            'RestmuellHeute' => false,
-            'PapierHeute' => false,
-            'BioHeute' => false
+            'RestmuellHeute'=> false,
+            'PapierHeute'=> false,
+            'BioHeute'=> false
         ];
         $heuteListe = [];
         $weekSummary = [];
@@ -138,17 +138,17 @@ class AWMMuenchen extends IPSModuleStrict
         $this->SetValue('BioHeute', $todaySummary['BioHeute']);
 
         $emojiMap = [
-            'Restmüll' => '🗑️ Restmüll',
-            'Papier'   => '📦 Papier',
-            'Bio'      => '🍂 Bio'
+            'Restmüll'=> '🗑 Restmüll',
+            'Papier'  => '📦 Papier',
+            'Bio'     => '🍂 Bio'
         ];
 
         // Formatiere Heute-Liste
         $heuteListeFormatted = array_map(function($t) use ($emojiMap) { return isset($emojiMap[$t]) ? $emojiMap[$t] : $t; }, $heuteListe);
-        $heuteStr = empty($heuteListeFormatted) ? "✅ Keine Leerung" : implode(", ", $heuteListeFormatted);
+        $heuteStr = empty($heuteListeFormatted) ? "✅ Keine Leerung": implode(", ", $heuteListeFormatted);
         $this->SetValue('Heute', $heuteStr);
         
-        $heuteVesta = empty($heuteListe) ? "" : implode(", ", $heuteListe);
+        $heuteVesta = empty($heuteListe) ? "": implode(", ", $heuteListe);
         $this->SetValue('HeuteVestaboard', $heuteVesta);
 
         // Wochen-Variablen setzen
@@ -158,7 +158,7 @@ class AWMMuenchen extends IPSModuleStrict
             if (!empty($weekSummary[$dayName])) {
                 $weekSummaryFormatted = array_map(function($t) use ($emojiMap) { return isset($emojiMap[$t]) ? $emojiMap[$t] : $t; }, $weekSummary[$dayName]);
             }
-            $val = empty($weekSummaryFormatted) ? "✅ Keine Leerung" : implode(", ", $weekSummaryFormatted);
+            $val = empty($weekSummaryFormatted) ? "✅ Keine Leerung": implode(", ", $weekSummaryFormatted);
             $this->SetValue($varName, $val);
         }
         
@@ -173,13 +173,13 @@ class AWMMuenchen extends IPSModuleStrict
         } else {
             // Fallback for tests
             $context = stream_context_create([
-                'http' => [
-                    'timeout' => 15,
-                    'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\r\n"
+                'http'=> [
+                    'timeout'=> 15,
+                    'header'=> "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\r\n"
                 ],
-                'ssl' => [
-                    'verify_peer' => false,
-                    'verify_peer_name' => false
+                'ssl'=> [
+                    'verify_peer'=> false,
+                    'verify_peer_name'=> false
                 ]
             ]);
             $data = @file_get_contents($url, false, $context);
@@ -192,7 +192,7 @@ class AWMMuenchen extends IPSModuleStrict
 
         foreach ($lines as $line) {
             if (strpos($line, 'BEGIN:VEVENT') === 0) {
-                $currentEvent = ['exdates' => [], 'rrule' => [], 'dtend' => 0];
+                $currentEvent = ['exdates'=> [], 'rrule'=> [], 'dtend'=> 0];
             } elseif (strpos($line, 'END:VEVENT') === 0) {
                 if ($currentEvent && isset($currentEvent['dtstart'])) {
                     $events[] = $currentEvent;
@@ -203,15 +203,15 @@ class AWMMuenchen extends IPSModuleStrict
                     $currentEvent['summary'] = substr($line, 8);
                 } elseif (strpos($line, 'DTSTART') === 0) {
                     if (preg_match('/:(\d{8})/', $line, $m)) {
-                        $currentEvent['dtstart'] = strtotime($m[1] . ' 00:00:00');
+                        $currentEvent['dtstart'] = strtotime($m[1] . '00:00:00');
                     }
                 } elseif (strpos($line, 'DTEND') === 0) {
                     if (preg_match('/:(\d{8})/', $line, $m)) {
-                        $currentEvent['dtend'] = strtotime($m[1] . ' 00:00:00');
+                        $currentEvent['dtend'] = strtotime($m[1] . '00:00:00');
                     }
                 } elseif (strpos($line, 'EXDATE') === 0) {
                     if (preg_match('/:(\d{8})/', $line, $m)) {
-                        $currentEvent['exdates'][] = strtotime($m[1] . ' 00:00:00');
+                        $currentEvent['exdates'][] = strtotime($m[1] . '00:00:00');
                     }
                 } elseif (strpos($line, 'RRULE:') === 0) {
                     $parts = explode(';', substr($line, 6));
@@ -221,7 +221,7 @@ class AWMMuenchen extends IPSModuleStrict
                             $k = $kv[0];
                             $v = $kv[1];
                             if ($k == 'UNTIL') {
-                                $v = strtotime(substr($v, 0, 8) . ' 00:00:00');
+                                $v = strtotime(substr($v, 0, 8) . '00:00:00');
                             }
                             $currentEvent['rrule'][$k] = $v;
                         }
@@ -257,7 +257,7 @@ class AWMMuenchen extends IPSModuleStrict
         if ($targetTs < $event['dtstart']) return false;
 
         // Wochentag prüfen
-        $targetDayMap = ['0' => 'SU', '1' => 'MO', '2' => 'TU', '3' => 'WE', '4' => 'TH', '5' => 'FR', '6' => 'SA'];
+        $targetDayMap = ['0'=> 'SU', '1'=> 'MO', '2'=> 'TU', '3'=> 'WE', '4'=> 'TH', '5'=> 'FR', '6'=> 'SA'];
         $targetWkday = $targetDayMap[date('w', $targetTs)];
         if (isset($rrule['BYDAY']) && strpos($rrule['BYDAY'], $targetWkday) === false) return false;
 
@@ -277,7 +277,7 @@ class AWMMuenchen extends IPSModuleStrict
 
     protected function LogMessage(string $Message, int $Type): bool
     {
-        IPS_LogMessage('SmartVillaKunterbunt', 'AWMMuenchen: ' . $Message);
+        IPS_LogMessage('SmartVillaKunterbunt', 'AWMMuenchen: '. $Message);
         return true;
     }
 
