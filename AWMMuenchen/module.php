@@ -16,20 +16,31 @@ class AWMMuenchen extends IPSModuleStrict
 
         // Heutige Abholungen
         $this->RegisterVariableBoolean('RestmuellHeute', 'Restmülltonne (Heute)', '', 10);
+        IPS_SetIcon($this->GetIDForIdent('RestmuellHeute'), 'Clock');
         $this->RegisterVariableBoolean('PapierHeute', 'Papiertonne (Heute)', '', 20);
+        IPS_SetIcon($this->GetIDForIdent('PapierHeute'), 'Clock');
         $this->RegisterVariableBoolean('BioHeute', 'Biotonne (Heute)', '', 30);
+        IPS_SetIcon($this->GetIDForIdent('BioHeute'), 'Clock');
 
         // Heute: Einzelne String-Variable als Zusammenfassung
         $this->RegisterVariableString('Heute', 'Heute', '', 4);
+        IPS_SetIcon($this->GetIDForIdent('Heute'), 'Clock');
         $this->RegisterVariableString('HeuteVestaboard', 'Heute (Vestaboard)', '', 5);
+        IPS_SetIcon($this->GetIDForIdent('HeuteVestaboard'), 'Clock');
 
         // Variablen für Wochentage (Wochenübersicht)
         $this->RegisterVariableString('Montag', 'Montag', '', 11);
+        IPS_SetIcon($this->GetIDForIdent('Montag'), 'Clock');
         $this->RegisterVariableString('Dienstag', 'Dienstag', '', 12);
+        IPS_SetIcon($this->GetIDForIdent('Dienstag'), 'Clock');
         $this->RegisterVariableString('Mittwoch', 'Mittwoch', '', 13);
+        IPS_SetIcon($this->GetIDForIdent('Mittwoch'), 'Clock');
         $this->RegisterVariableString('Donnerstag', 'Donnerstag', '', 14);
+        IPS_SetIcon($this->GetIDForIdent('Donnerstag'), 'Clock');
         $this->RegisterVariableString('Freitag', 'Freitag', '', 15);
+        IPS_SetIcon($this->GetIDForIdent('Freitag'), 'Clock');
         $this->RegisterVariableString('Samstag', 'Samstag', '', 16);
+        IPS_SetIcon($this->GetIDForIdent('Samstag'), 'Clock');
     }
 
     public function ApplyChanges(): void{
