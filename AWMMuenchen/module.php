@@ -298,6 +298,10 @@ class AWMMuenchen extends IPSModuleStrict
 {
     "elements": [
         {
+            "type": "Label",
+            "caption": "Hier trägst du die Download-URL von deinem AWM München Abfuhrkalender ein. Wähle außerdem aus, alle wie viel Stunden wir die Daten frisch für dich holen sollen."
+        },
+        {
             "type": "RowLayout",
             "items": [
                 {
@@ -316,6 +320,10 @@ class AWMMuenchen extends IPSModuleStrict
         }
     ],
     "actions": [
+        {
+            "type": "Label",
+            "caption": "Wenn du die URL gerade neu eingetragen hast, klick am besten gleich mal hier unten, um die aktuellen Termine zu laden:"
+        },
         {
             "type": "Button",
             "label": "Kalender jetzt abrufen",
